@@ -4,6 +4,7 @@ from lxml import html
 import pandas as pd
 import requests
 import asyncio
+import atexit
 import random
 import time
 import os
@@ -24,6 +25,12 @@ def saving_files(data,path):
         df.to_csv(path, index=False)
         print('============================= SECOND FILE SAVED ==========================')
 
+def info_init():
+    url = "https://trying-20541-default-rtdb.firebaseio.com/Main_info.json"
+    response = requests.get(url)
+    data = response.json()['main_init']
+    print(data)
+info_init()
 
 def drop_duplicate(path):
     all_df = pd.read_csv(path)
@@ -241,3 +248,4 @@ async def xpath_scroll_center(page, xpath: str, delay: float = 0.5):
         return False
 
 
+atexit.register(info_init)
